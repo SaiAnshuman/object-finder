@@ -7,7 +7,7 @@ var Recognition = new SpeechRecognition();
 function setup(){
 
     canvas = createCanvas(600,500);
-    canvas.center();
+    canvas.position(15,15);
     video = createCapture(VIDEO);
     video.size(320, 240);
     video.hide();
@@ -20,30 +20,10 @@ function FIND(){
  detection = ml5.objectDetector('cocossd', modelLoaded);
  document.getElementById("status").innerHTML = "Status : Identifiying Objects.. ";
  objname = document.getElementById("obj-name-input").value;
-
- if(obj[i].label == objname){
-
-  video.stop();
-  detection.detect(gotResults);  
-  document.getElementById("object-found-or-not").innerHTML = "Object Mentoined Found!";
-  var synth = window.speechSynthesis;
-
-  speak_data = "Object Mentoined Found.";
-
-  var utterThis  = new SpeechSynthesisUtterance(speak_data);
-
-  synth.speak(utterThis);
-
-
- }
-
- else{
-
-    document.getElementById("object-found-or-not").innerHTML = "Object Mentoined Not Found";
-
- }
-
 }
+
+
+
 
 function modelLoaded(){
  
@@ -63,7 +43,7 @@ function draw(){
         g = random(255);
         b = random(255);
     
-       for( i=0 ; i < objects.length ; i++){
+       for( i=0 ; i < obj.length ; i++){
     
         
         
@@ -76,6 +56,29 @@ function draw(){
         noFill();
         stroke(r,g,b);
         rect(obj[i].x , obj[i].y , obj[i].width , obj[i].height);
+
+        if(obj[i].label == objname){
+
+            video.stop();
+            detection.detect(gotResults);  
+            document.getElementById("object-found-or-not").innerHTML = objname + "Found!";
+            var synth = window.speechSynthesis;
+          
+            speak_data = "Object Name Mentioned Found.";
+          
+            var utterThis  = new SpeechSynthesisUtterance(speak_data);
+          
+            synth.speak(utterThis);
+          
+          
+           }
+          
+           else{
+          
+              document.getElementById("object-found-or-not").innerHTML = objname + "Not Found";
+          
+           }
+          
         
     
        }
@@ -85,10 +88,26 @@ function draw(){
 }
 
 
-function gotResults(results){
+function gotResults(results,error){
+  
+ if(error){
 
- obj = results.length;
+   console.log();
+
+ }
+
+  else{
+
+    console.log(results);
+    obj = results;
+
+  }
 
 }
+
+
+
+
+
 
 
