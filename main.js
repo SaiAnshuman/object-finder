@@ -31,6 +31,23 @@ function modelLoaded(){
     status = true;
 }
 
+function gotResults(error,results){
+  
+  if(error){
+ 
+    console.log();
+ 
+  }
+ 
+   else{
+ 
+     console.log(results);
+     obj = results;
+ 
+   }
+ 
+ }
+
 function draw(){
 
     image(video,0,0,600,500);
@@ -61,7 +78,7 @@ function draw(){
 
             video.stop();
             detection.detect(gotResults);  
-            document.getElementById("object-found-or-not").innerHTML = objname + "Found!";
+            document.getElementById("object-found-or-not").innerHTML = objname + " Found!";
             var synth = window.speechSynthesis;
           
             speak_data = "Object Name Mentioned Found.";
@@ -75,7 +92,15 @@ function draw(){
           
            else{
           
-              document.getElementById("object-found-or-not").innerHTML = objname + "Not Found";
+              document.getElementById("object-found-or-not").innerHTML = objname + " Not Found";
+
+              var synth = window.speechSynthesis;
+          
+            speak_data = "Object Name Mentioned Not Found.";
+          
+            var utterThis  = new SpeechSynthesisUtterance(speak_data);
+          
+            synth.speak(utterThis);
           
            }
           
@@ -88,22 +113,8 @@ function draw(){
 }
 
 
-function gotResults(results,error){
-  
- if(error){
 
-   console.log();
 
- }
-
-  else{
-
-    console.log(results);
-    obj = results;
-
-  }
-
-}
 
 
 
